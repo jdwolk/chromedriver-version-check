@@ -12,6 +12,11 @@ const chromeVersion = (userAgentString) => {
   return version;
 }
 
+const chromeDriverLatestReleaseUrl = (chromeDriverVersion) => {
+  if (!chromeDriverVersion) { return ''; };
+  return `https://chromedriver.storage.googleapis.com/index.html?path=${chromeDriverVersion}/`;
+}
+
 const queryChromeDriverVersion = async (chromeVersion) => {
   const url = `${process.env.REACT_APP_SERVER_URL}/api/chromedriver_version?chrome_version=${chromeVersion}`
   try {
@@ -28,6 +33,9 @@ const styles = {
     width: '100%',
     bottom: 0,
     position: 'fixed',
+  },
+  teeny: {
+    fontSize: '.5em',
   }
 };
 
@@ -36,6 +44,7 @@ function App() {
   const chrome = chromeVersion(userAgent);
 
   const [chromeDriverVersion, setChromeDriverVersion] = useState();
+  const chromeDriverDownloadUrl = chromeDriverLatestReleaseUrl(chromeDriverVersion)
 
   useEffect(() => {
     const thisIsStuipid = async () => {
@@ -49,16 +58,20 @@ function App() {
     <>
       <section className="section">
         <div className="container">
-          <h2>You should be using Chromedriver version</h2>
+          <h2>You should be using ChromeDriver version:</h2>
           <h1 id="chromedriver-version" className="title">{chromeDriverVersion}</h1>
           <div className="columns">
             <div className="column">
+              <p>
+                <a href={chromeDriverDownloadUrl}>Download ChromeDriver</a>
+              </p>
+
               <p>
                 Chrome Version: {chrome}
               </p>
 
               <p>
-                Chromedriver version is derived using <a href="https://sites.google.com/a/chromium.org/chromedriver/downloads/version-selection">these instructions</a>
+                ChromeDriver version is derived using <a href="https://sites.google.com/a/chromium.org/chromedriver/downloads/version-selection">these instructions</a>
               </p>
             </div>
           </div>
@@ -68,7 +81,13 @@ function App() {
         <div className="content has-text-centered">
           <p>
             <small>
-              This site is in no way affiliated with Google or Google Chrome
+              This site is in no way affiliated with Google, Google Chrome or ChromeDriver
+            </small>
+          </p>
+
+          <p>
+            <small style={styles.teeny}>
+              (...I just got tired of manually creating the URL every time Chrome was updated)
             </small>
           </p>
         </div>
