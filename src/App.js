@@ -34,6 +34,10 @@ const styles = {
     bottom: 0,
     position: 'fixed',
   },
+  loadingSpinner: {
+    width: '2em',
+    height: '2em'
+  },
   teeny: {
     fontSize: '.5em',
   }
@@ -59,7 +63,11 @@ function App() {
       <section className="section">
         <div className="container">
           <h2>You should be using ChromeDriver version:</h2>
-          <h1 id="chromedriver-version" className="title">{chromeDriverVersion}</h1>
+          {
+            chromeDriverVersion ?
+              <h1 id="chromedriver-version" className="title">{chromeDriverVersion}</h1> :
+              <img alt="loading..." src="/loading.gif" style={styles.loadingSpinner} />
+          }
           <div className="columns">
             <div className="column">
               <p>
